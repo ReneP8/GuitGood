@@ -13,10 +13,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
+        appBar: AppBar(title: Text(widget.title), actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              _gamePresets();
+            },
+          )
+        ]),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -44,5 +56,57 @@ class _HomeState extends State<Home> {
             ],
           ),
         ));
+  }
+
+  void _gamePresets() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => SimpleDialog(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              title: Row(
+                children: [
+                  Text('Game Settings'),
+                  Spacer(),
+                  IconButton(
+                      icon: Icon(Icons.cancel, size: 25, color: Colors.grey),
+                      onPressed: () => Navigator.pop(context))
+                ],
+              ),
+              children: [
+                Divider(color: Colors.green, height: 2),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Slider(
+                          onChanged: (double value) {}, value: 0.3, divisions: 10, label: 'Difficulty',
+                        ),
+                      ],
+                    )),
+                SizedBox(width: MediaQuery.of(context).size.width, height: 30),
+                SizedBox(
+                  height: 40,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text('Add',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    color: Colors.green,
+                    onPressed: () async {
+                      // final FormState form = _formKey.currentState;
+                      // if (form.validate()) {
+                      //   form.save();
+                      //   await this._userTodosService.createTodo(todoModel);
+                      //   Navigator.of(context).pop();
+                      // }
+                    },
+                  ),
+                )
+              ],
+            ));
   }
 }
