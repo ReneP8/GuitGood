@@ -15,6 +15,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
+  double _difficulty;
+
+  @override
+  void initState() {
+    super.initState();
+    _difficulty = 1.0;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,8 +90,26 @@ class _HomeState extends State<Home> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Slider(
-                          onChanged: (double value) {}, value: 0.3, divisions: 10, label: 'Difficulty',
+                        Column(
+                          children: <Widget>[
+                            SizedBox(height: 30.0),
+                            Text('Difficulty',
+                                style: TextStyle(color: Colors.green)),
+                            new Slider(
+                              activeColor: Colors.blue,
+                              inactiveColor: Colors.black,
+                              value: _difficulty,
+                              onChanged: (val) => {
+                                setState(() {
+                                  _difficulty = val;
+                                })
+                              },
+                              min: 1.0,
+                              max: 10.0,
+                              divisions: 10,
+                              label: _difficulty.round().toString(),
+                            ),
+                          ],
                         ),
                       ],
                     )),
@@ -90,22 +117,21 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 40,
                   child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text('Add',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                    color: Colors.green,
-                    onPressed: () async {
-                      // final FormState form = _formKey.currentState;
-                      // if (form.validate()) {
-                      //   form.save();
-                      //   await this._userTodosService.createTodo(todoModel);
-                      //   Navigator.of(context).pop();
-                      // }
-                    },
-                  ),
-                )
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text('Add',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                      color: Colors.green,
+                      onPressed: () async {
+                        // final FormState form = _formKey.currentState;
+                        // if (form.validate()) {
+                        //   form.save();
+                        //   await this._userTodosService.createTodo(todoModel);
+                        //   Navigator.of(context).pop();
+                      }),
+                ),
               ],
             ));
   }
