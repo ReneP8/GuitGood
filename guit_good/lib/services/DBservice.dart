@@ -4,6 +4,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:guit_good/models/Challenge.dart';
 
+/*
+This service provides access to our database.
+ */
 class DBservice {
   DBservice._();
   static final DBservice db = DBservice._();
@@ -18,6 +21,7 @@ class DBservice {
     _database = await initDB();
     return _database;
   }
+
   /*
   Tries to open the database. If there is no database it will create a new database.
   onCreate is not really needed, since we ship the database,
@@ -54,6 +58,7 @@ class DBservice {
       version: 1
     );
   }
+
   /*
     Creates a new Challenge
     param: newChallenge is challenge that is to be inserted
@@ -70,6 +75,7 @@ class DBservice {
         newChallenge.content, newChallenge.category]);
     return res;
   }
+
   /*
     Returns a challenge; this is just for testing
    */

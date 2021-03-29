@@ -1,14 +1,14 @@
 //not functional yet
-class Challenge {
-  final int challengeID;
+class Setting {
+  final int settingID;
   final int difficulty;
   final int length;
 
-  Challenge({this.challengeID, this.difficulty, this.length});
+  Setting({this.settingID, this.difficulty, this.length});
 
   Map<String, dynamic> toMap() {
     return {
-      'challengeID': challengeID,
+      'challengeID': settingID,
       'difficulty': difficulty,
       'length': length,
     };
