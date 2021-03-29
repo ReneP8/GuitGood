@@ -1,9 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-
 class Challenge {
   final int challengeID;
   final int difficulty;
@@ -19,3 +13,4 @@ class Challenge {
     };
   }
 }
+
