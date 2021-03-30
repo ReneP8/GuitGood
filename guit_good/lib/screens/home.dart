@@ -16,13 +16,14 @@ class _HomeState extends State<Home> {
   static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   double _difficulty;
+  double _length;
 
   @override
   void initState() {
     super.initState();
-    _difficulty = 1.0;
+    _difficulty = 3.0;
+    _length = 3.0;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,19 +96,40 @@ class _HomeState extends State<Home> {
                             SizedBox(height: 30.0),
                             Text('Difficulty',
                                 style: TextStyle(color: Colors.green)),
-                            new Slider(
-                              activeColor: Colors.blue,
-                              inactiveColor: Colors.black,
-                              value: _difficulty,
-                              onChanged: (val) => {
-                                setState(() {
-                                  _difficulty = val;
-                                })
-                              },
-                              min: 1.0,
-                              max: 10.0,
-                              divisions: 10,
-                              label: _difficulty.round().toString(),
+                            StatefulBuilder(
+                              builder: (context, state) => Slider(
+                                activeColor: Colors.green,
+                                inactiveColor: Colors.black,
+                                value: _difficulty,
+                                onChanged: (val) => {
+                                  state(() {
+                                    _difficulty = val;
+                                  })
+                                },
+                                min: 1.0,
+                                max: 10.0,
+                                divisions: 10,
+                                label: _difficulty.round().toString(),
+                              ),
+                            ),
+                            SizedBox(height: 30.0),
+                            Text('Length',
+                                style: TextStyle(color: Colors.green)),
+                            StatefulBuilder(
+                              builder: (context, state) => Slider(
+                                activeColor: Colors.green,
+                                inactiveColor: Colors.black,
+                                value: _length,
+                                onChanged: (val) => {
+                                  state(() {
+                                    _length = val;
+                                  })
+                                },
+                                min: 1.0,
+                                max: 10.0,
+                                divisions: 10,
+                                label: _length.round().toString(),
+                              ),
                             ),
                           ],
                         ),
@@ -119,7 +141,7 @@ class _HomeState extends State<Home> {
                   child: FlatButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      child: Text('Add',
+                      child: Text('Save',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
