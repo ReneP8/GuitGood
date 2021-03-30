@@ -1,23 +1,23 @@
 import 'dart:async';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:guit_good/models/Challenge.dart';
 
 /*
 This service provides access to our database.
  */
-class DBservice {
-  DBservice._();
-  static final DBservice db = DBservice._();
+class DatabaseService {
+  DatabaseService._();
+
+  static final DatabaseService db = DatabaseService._();
   static Database _database;
 
   /*
   Returns _database if it exists and otherwise opens the database
    */
   Future<Database> get database async {
-    if(_database != null)
-      return _database;
+    if (_database != null) return _database;
     _database = await initDB();
     return _database;
   }
@@ -29,22 +29,22 @@ class DBservice {
    */
   initDB() async {
     return await openDatabase(
-      join(await getDatabasesPath(), 'guitGood.db').toString(),
-      onCreate: (db, version) async {
-        await db.execute('''
+        join(await getDatabasesPath(), 'guitGood.db').toString(),
+        onCreate: (db, version) async {
+      await db.execute('''
         CREATE TABLE "Challenges" (
         "challengeID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
         "difficulty"	INTEGER NOT NULL DEFAULT 3,
         "content"	TEXT NOT NULL,
         "category"	TEXT NOT NULL DEFAULT 'random'
         );''');
-        await db.execute('''
+      await db.execute('''
         CREATE TABLE "Settings" (
           "settingID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
           "difficulty"	INTEGER NOT NULL DEFAULT 3 CHECK(difficulty>0 and difficulty<=10),
           "length"	INTEGER NOT NULL DEFAULT 3 CHECK(difficulty>0 and difficulty<=10)
         );''');
-        await db.execute('''
+      await db.execute('''
         CREATE TABLE "Songs" (
           "songID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
           "name"	TEXT NOT NULL,
@@ -54,9 +54,7 @@ class DBservice {
           "genre"	INTEGER NOT NULL DEFAULT 'random',
           "url"	TEXT CHECK(SUBSTR(url,1,8)='https://')
         );''');
-      },
-      version: 1
-    );
+    }, version: 1);
   }
 
   /*
@@ -71,8 +69,12 @@ class DBservice {
      INSERT INTO challenges (
       challengeID, difficulty, content, category
      ) VALUES (?, ?, ?, ?)
-    ''', [newChallenge.challengeID, newChallenge.difficulty,
-        newChallenge.content, newChallenge.category]);
+    ''', [
+      newChallenge.challengeID,
+      newChallenge.difficulty,
+      newChallenge.content,
+      newChallenge.category
+    ]);
     return res;
   }
 
@@ -82,7 +84,7 @@ class DBservice {
   Future<dynamic> getChallenge() async {
     final db = await database;
     var res = await db.query("challenge");
-    if(res.length == 0) {
+    if (res.length == 0) {
       return null;
     } else {
       var resMap = res[0];
@@ -90,5 +92,3 @@ class DBservice {
     }
   }
 }
-
-

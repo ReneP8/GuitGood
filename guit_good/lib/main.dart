@@ -3,7 +3,7 @@ import 'package:guit_good/screens/home.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'services/DBservice.dart';
+import 'services/database_service.dart';
 
 
 void main() async {
