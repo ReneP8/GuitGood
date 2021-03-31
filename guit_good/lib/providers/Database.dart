@@ -72,4 +72,10 @@ class DatabaseProvider {
     res.isNotEmpty ? res.map((c) => Setting.fromMap(c)).toList().first : null;
     return defaultSetting;
   }
+
+  Future<int> updateSetting(Setting setting) async {
+    final db = await database;
+    int res = await db.update("Settings", setting.toMap(), where: "settingID = ?", whereArgs: [setting.settingID]);
+    return res;
+  }
 }

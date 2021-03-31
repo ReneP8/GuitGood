@@ -8,7 +8,7 @@ class Setting {
 
   Map<String, dynamic> toMap() {
     return {
-      'settingId': settingID,
+      'settingID': settingID,
       'difficulty': difficulty,
       'length': length,
     };
@@ -16,7 +16,7 @@ class Setting {
 
   // from map to object
   factory Setting.fromMap(Map<String, dynamic> json) => new Setting(
-    settingID: json["settingId"],
+    settingID: json["settingID"],
     difficulty: json["difficulty"],
     length: json["length"],
   );
