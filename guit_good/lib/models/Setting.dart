@@ -8,10 +8,16 @@ class Setting {
 
   Map<String, dynamic> toMap() {
     return {
-      'challengeID': settingID,
+      'settingId': settingID,
       'difficulty': difficulty,
       'length': length,
     };
   }
+
+  factory Setting.fromMap(Map<String, dynamic> json) => new Setting(
+    settingID: json["settingId"],
+    difficulty: json["difficulty"],
+    length: json["length"],
+  );
 }
 

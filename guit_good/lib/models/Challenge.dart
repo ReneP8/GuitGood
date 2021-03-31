@@ -14,5 +14,12 @@ class Challenge {
       'category': category
     };
   }
+
+  factory Challenge.fromMap(Map<String, dynamic> json) => new Challenge(
+    challengeID: json["challengeID"],
+    difficulty: json["difficulty"],
+    content: json["content"],
+    category: json["category"],
+  );
 }
 

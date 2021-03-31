@@ -21,5 +21,15 @@ class Song {
       'url' : url
     };
   }
+
+  factory Song.fromMap(Map<String, dynamic> json) => new Song(
+    songID: json["songID"],
+    difficulty: json["difficulty"],
+    length: json["length"],
+    genre: json["genre"],
+    name: json["name"],
+    artist: json["artist"],
+    url: json["url"],
+  );
 }
 
