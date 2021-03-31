@@ -1,8 +1,8 @@
 //not functional yet
 class Setting {
-  final int settingID;
-  final int difficulty;
-  final int length;
+  int settingID;
+  int difficulty;
+  int length;
 
   Setting({this.settingID, this.difficulty, this.length});
 
