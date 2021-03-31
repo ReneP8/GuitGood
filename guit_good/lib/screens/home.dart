@@ -4,7 +4,6 @@ import 'package:guit_good/models/Setting.dart';
 import 'package:guit_good/providers/Database.dart';
 import 'package:guit_good/screens/create.dart';
 import 'package:guit_good/screens/game.dart';
-import 'package:guit_good/services/challenge_service.dart';
 
 class Home extends StatefulWidget {
   final String title;
@@ -20,9 +19,6 @@ class _HomeState extends State<Home> {
 
   Setting _settings = new Setting();
   DatabaseProvider _databaseProvider = DatabaseProvider.db;
-
-  double _difficulty;
-  double _length;
 
   @override
   void initState() {
