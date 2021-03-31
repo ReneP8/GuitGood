@@ -14,6 +14,7 @@ class Setting {
     };
   }
 
+  // from map to object
   factory Setting.fromMap(Map<String, dynamic> json) => new Setting(
     settingID: json["settingId"],
     difficulty: json["difficulty"],

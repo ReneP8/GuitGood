@@ -22,6 +22,7 @@ class Song {
     };
   }
 
+  // from map to object
   factory Song.fromMap(Map<String, dynamic> json) => new Song(
     songID: json["songID"],
     difficulty: json["difficulty"],

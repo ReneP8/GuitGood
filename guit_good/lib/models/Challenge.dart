@@ -15,6 +15,7 @@ class Challenge {
     };
   }
 
+  // from map to object
   factory Challenge.fromMap(Map<String, dynamic> json) => new Challenge(
     challengeID: json["challengeID"],
     difficulty: json["difficulty"],
