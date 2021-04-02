@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:guit_good/models/Setting.dart';
-import 'package:guit_good/providers/Database.dart';
+import 'package:guit_good/models/setting.dart';
 import 'package:guit_good/screens/create.dart';
 import 'package:guit_good/screens/game.dart';
+import 'package:guit_good/services/settings_service.dart';
 
 class Home extends StatefulWidget {
   final String title;
@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   Setting _settings = new Setting();
-  DatabaseProvider _databaseProvider = DatabaseProvider.db;
+  SettingsService _settingsService = new SettingsService();
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
     showDialog(
         context: context,
         builder: (BuildContext context) => FutureBuilder(
-            future: _databaseProvider.getSettings(),
+            future: _settingsService.getSettings(),
             builder: (context, AsyncSnapshot<Setting> snapshot) {
               if (snapshot.hasData) {
                 _settings = snapshot.data;
@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                             if (form.validate()) {
                               form.save();
                               await this
-                                  ._databaseProvider
+                                  ._settingsService
                                   .updateSetting(_settings);
                               Navigator.of(context).pop();
                             }
