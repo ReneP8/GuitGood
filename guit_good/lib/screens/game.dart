@@ -1,7 +1,10 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guit_good/models/challenge.dart';
+import 'package:guit_good/services/challenge_service.dart';
 
 class Game extends StatefulWidget {
   @override
@@ -10,29 +13,43 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   bool _displayFront;
-  bool _flipXAxis;
+
+  Challenge _challenge = new Challenge();
+  ChallengeService _challengeService = new ChallengeService();
 
   @override
   void initState() {
     super.initState();
     _displayFront = true;
-    _flipXAxis = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Play Game')),
-        body: Center(
-          child: Container(
-              constraints: BoxConstraints.tight(Size.square(200.0)),
-              child: _buildFlipAnimation()),
-        ));
+      appBar: AppBar(title: Text('Play Game')),
+      body: FutureBuilder(
+        future: _challengeService.getRandomChallenge(),
+        builder: (BuildContext context, AsyncSnapshot<Challenge> snapshot) {
+          if (snapshot.hasData) {
+            _challenge = snapshot.data;
+            return Center(
+              child: Container(
+                  constraints: BoxConstraints.tight(Size.square(300.0)),
+                  child: _buildFlipAnimation()),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
   }
 
   Widget _buildFlipAnimation() {
     return GestureDetector(
-      onTap: () => setState(() =>_displayFront = !_displayFront),
+      onTap: () => setState(() => _displayFront = !_displayFront),
       child: AnimatedSwitcher(
         transitionBuilder: __transitionBuilder,
         duration: Duration(milliseconds: 600),
@@ -41,7 +58,7 @@ class _GameState extends State<Game> {
     );
   }
 
-  Widget _buildLayout({Key key, String faceName, Color backgroundColor}) {
+  Widget _buildLayout({Key key, String faceName, Color backgroundColor, String side}) {
     return Container(
       key: key,
       decoration: BoxDecoration(
@@ -50,7 +67,14 @@ class _GameState extends State<Game> {
         color: backgroundColor,
       ),
       child: Center(
-        child: Text(faceName, style: TextStyle(fontSize: 30.0)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(side.contains('front') ? 'Song' : 'Challenge', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+            SizedBox(height: 30.0),
+            Text(faceName, style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+          ],
+        ),
       ),
     );
   }
@@ -58,8 +82,9 @@ class _GameState extends State<Game> {
   Widget _buildFront() {
     return _buildLayout(
       key: ValueKey(true),
-      backgroundColor: Colors.green,
-      faceName: "Song",
+      backgroundColor: Colors.yellow,
+      faceName: _challenge.content,
+      side: 'front'
     );
   }
 
@@ -67,7 +92,8 @@ class _GameState extends State<Game> {
     return _buildLayout(
       key: ValueKey(false),
       backgroundColor: Colors.green,
-      faceName: "Challenge",
+      faceName: _challenge.content,
+      side: 'rear'
     );
   }
 
