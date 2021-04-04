@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guit_good/models/challenge.dart';
+import 'package:guit_good/models/song.dart';
 import 'package:guit_good/services/challenge_service.dart';
+import 'package:guit_good/services/song_service.dart';
 
 class Game extends StatefulWidget {
   @override
@@ -12,10 +14,13 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  bool _displayFront;
-
-  Challenge _challenge = new Challenge();
   ChallengeService _challengeService = new ChallengeService();
+  SongService _songService = new SongService();
+
+  bool _displayFront;
+  Challenge _challenge = new Challenge();
+  Song _song = new Song();
+
 
   @override
   void initState() {
@@ -28,10 +33,11 @@ class _GameState extends State<Game> {
     return Scaffold(
       appBar: AppBar(title: Text('Play Game')),
       body: FutureBuilder(
-        future: _challengeService.getRandomChallenge(),
-        builder: (BuildContext context, AsyncSnapshot<Challenge> snapshot) {
+        future: Future.wait([_challengeService.getRandomChallenge(),_songService.getRandomSong()]),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
-            _challenge = snapshot.data;
+            _challenge = snapshot.data[0];
+            _song = snapshot.data[1];
             return Center(
               child: Container(
                   constraints: BoxConstraints.tight(Size.square(300.0)),
@@ -83,7 +89,7 @@ class _GameState extends State<Game> {
     return _buildLayout(
       key: ValueKey(true),
       backgroundColor: Colors.yellow,
-      faceName: _challenge.content,
+      faceName: _song.name,
       side: 'front'
     );
   }
