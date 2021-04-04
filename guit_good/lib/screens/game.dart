@@ -4,11 +4,16 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guit_good/models/challenge.dart';
+import 'package:guit_good/models/setting.dart';
 import 'package:guit_good/models/song.dart';
 import 'package:guit_good/services/challenge_service.dart';
 import 'package:guit_good/services/song_service.dart';
 
 class Game extends StatefulWidget {
+  final Setting settings;
+
+  const Game({Key key, this.settings}) : super(key: key);
+
   @override
   _GameState createState() => _GameState();
 }
@@ -21,7 +26,6 @@ class _GameState extends State<Game> {
   Challenge _challenge = new Challenge();
   Song _song = new Song();
 
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +37,11 @@ class _GameState extends State<Game> {
     return Scaffold(
       appBar: AppBar(title: Text('Play Game')),
       body: FutureBuilder(
-        future: Future.wait([_challengeService.getRandomChallenge(),_songService.getRandomSong()]),
+        future: Future.wait([
+          _challengeService.getRandomChallenge(widget.settings.difficulty),
+          _songService.getRandomSong(
+              widget.settings.difficulty, widget.settings.length)
+        ]),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.hasData) {
             _challenge = snapshot.data[0];
@@ -64,7 +72,8 @@ class _GameState extends State<Game> {
     );
   }
 
-  Widget _buildLayout({Key key, String faceName, Color backgroundColor, String side}) {
+  Widget _buildLayout(
+      {Key key, String faceName, Color backgroundColor, String side}) {
     return Container(
       key: key,
       decoration: BoxDecoration(
@@ -76,9 +85,11 @@ class _GameState extends State<Game> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(side.contains('front') ? 'Song' : 'Challenge', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+            Text(side.contains('front') ? 'Song' : 'Challenge',
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
             SizedBox(height: 30.0),
-            Text(faceName, style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
+            Text(faceName,
+                style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center),
           ],
         ),
       ),
@@ -87,20 +98,18 @@ class _GameState extends State<Game> {
 
   Widget _buildFront() {
     return _buildLayout(
-      key: ValueKey(true),
-      backgroundColor: Colors.yellow,
-      faceName: _song.name,
-      side: 'front'
-    );
+        key: ValueKey(true),
+        backgroundColor: Colors.yellow,
+        faceName: _song.name,
+        side: 'front');
   }
 
   Widget _buildRear() {
     return _buildLayout(
-      key: ValueKey(false),
-      backgroundColor: Colors.green,
-      faceName: _challenge.content,
-      side: 'rear'
-    );
+        key: ValueKey(false),
+        backgroundColor: Colors.green,
+        faceName: _challenge.content,
+        side: 'rear');
   }
 
   Widget __transitionBuilder(Widget widget, Animation<double> animation) {

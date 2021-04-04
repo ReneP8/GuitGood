@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Game()),
+                      MaterialPageRoute(builder: (context) => Game(settings: _settings)),
                     );
                   },
                   icon: Icon(Icons.play_arrow),
