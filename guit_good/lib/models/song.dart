@@ -1,12 +1,12 @@
 //not functional yet
 class Song {
-  final int songID;
-  final int difficulty;
-  final int length;
-  final String genre;
-  final String name;
-  final String artist;
-  final String url;
+  int songID;
+  int difficulty;
+  int length;
+  String genre;
+  String name;
+  String artist;
+  String url;
 
   Song({this.songID, this.difficulty, this.length, this.genre, this.name, this.artist, this.url});
 

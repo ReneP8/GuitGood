@@ -16,4 +16,11 @@ class SongService {
         res.isNotEmpty ? res.map((c) => Song.fromMap(c)).toList().first : null;
     return randomSong;
   }
+
+  Future createSong(Song song) async {
+    final db = await _databaseProvider.database;
+    var res = await db.insert("Songs", song.toMap());
+
+    return res;
+  }
 }

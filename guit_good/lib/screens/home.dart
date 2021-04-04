@@ -144,6 +144,7 @@ class _HomeState extends State<Home> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width, height: 30),
                     SizedBox(
+
                       height: 40,
                       child: FlatButton(
                           shape: RoundedRectangleBorder(
